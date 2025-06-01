@@ -8,8 +8,7 @@
           class="form-select"
           id="fromAccount"
           formControlName="fromAccount"
-          [class.is-invalid]="f['fromAccount'].invalid && f['fromAccount'].touched"
-        >
+          [class.is-invalid]="f['fromAccount'].invalid && f['fromAccount'].touched">
           <option value="">Select an account</option>
           <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
             {{ account.accountName }} ({{ account.type }}) - ${{ account.balance.toFixed(2) }}
