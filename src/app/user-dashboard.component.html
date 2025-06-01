@@ -1,0 +1,30 @@
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2 class="card-title text-center mb-4">Your Accounts</h2>
+
+    <ng-container *ngIf="accounts$ | async as accounts">
+      <div *ngIf="accounts.length === 0" class="alert alert-info text-center" role="alert">
+        You don't have any accounts yet.
+        <br>
+        <a routerLink="/create-account" class="btn btn-primary mt-2">Create New Account</a>
+      </div>
+
+      <div *ngIf="accounts.length > 0">
+        <ul class="list-group mb-4">
+          <li *ngFor="let account of accounts" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ account.accountName }}</strong> ({{ account.type }})
+            </div>
+            <span class="badge bg-primary rounded-pill">${{ account.balance.toFixed(2) }}</span>
+          </li>
+        </ul>
+
+        <div class="d-grid gap-2">
+          <a routerLink="/create-account" class="btn btn-success btn-lg">Create New Account</a>
+          <a routerLink="/transfer-funds" class="btn btn-info btn-lg">Transfer Funds</a>
+          <a routerLink="/transaction-history" class="btn btn-secondary btn-lg">View Transaction History</a>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

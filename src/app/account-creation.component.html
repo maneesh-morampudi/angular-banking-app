@@ -1,0 +1,79 @@
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2 class="card-title text-center mb-4">Create New Account</h2>
+    <form [formGroup]="accountForm" (ngSubmit)="createAccount()">
+      <div class="mb-3">
+        <label for="accountName" class="form-label">Account Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="accountName"
+          formControlName="accountName"
+          [class.is-invalid]="f['accountName'].invalid && f['accountName'].touched">
+        <div *ngIf="f['accountName'].invalid && f['accountName'].touched" class="invalid-feedback">
+          <div *ngIf="f['accountName'].errors?.['required']">Account Name is required.</div>
+          <div *ngIf="f['accountName'].errors?.['minlength']">Account Name must be at least 3 characters.</div>
+          <div *ngIf="f['accountName'].errors?.['maxlength']">Account Name cannot exceed 50 characters.</div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Account Type</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="chequing"
+              value="Chequing"
+              formControlName="accountType">
+            <label class="form-check-label" for="chequing">Chequing</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="savings"
+              value="Savings"
+              formControlName="accountType"
+            >
+            <label class="form-check-label" for="savings">Savings</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="initialBalance" class="form-label">Initial Balance</label>
+        <input
+          type="number"
+          class="form-control"
+          id="initialBalance"
+          formControlName="initialBalance"
+          [class.is-invalid]="f['initialBalance'].invalid && f['initialBalance'].touched"
+        >
+        <div *ngIf="f['initialBalance'].invalid && f['initialBalance'].touched" class="invalid-feedback">
+          <div *ngIf="f['initialBalance'].errors?.['required']">Initial Balance is required.</div>
+          <div *ngIf="f['initialBalance'].errors?.['min']">Balance must be greater than 0.</div>
+        </div>
+      </div>
+      <div *ngIf="selectedAccountType === 'Chequing' || selectedAccountType === 'Savings'" class="mb-3">
+        <app-custom-button
+          [label]="'Create ' + selectedAccountType + ' Account'"
+          [type]="selectedAccountType === 'Chequing' ? 'chequing' : 'savings'"
+          [disabled]="accountForm.invalid"
+          (onClick)="createAccount()"
+        ></app-custom-button>
+      </div>
+      <div *ngIf="!selectedAccountType" class="mb-3">
+        <p class="text-muted text-center">Select an account type to see the button.</p>
+      </div>
+
+      <div *ngIf="accountCreatedMessage" class="alert alert-success mt-3 text-center" role="alert">
+        {{ accountCreatedMessage }}
+      </div>
+    </form>
+    <div class="text-center mt-3">
+        <a [routerLink]="['/dashboard']">Go to Dashboard</a>
+    </div>
+  </div>
+</div>

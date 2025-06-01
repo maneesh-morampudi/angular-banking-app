@@ -1,0 +1,46 @@
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2 class="card-title text-center mb-4">Transaction History</h2>
+    <form [formGroup]="accountSelectForm">
+      <div class="mb-3">
+        <label for="selectedAccount" class="form-label">Select Account</label>
+        <select class="form-select" id="selectedAccount" formControlName="selectedAccount">
+          <option value="">-- Select an account --</option>
+          <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
+            {{ account.accountName }} ({{ account.type }}) - ${{ account.balance.toFixed(2) }}
+          </option>
+        </select>
+      </div>
+    </form>
+
+    <ng-container *ngIf="filteredTransactions$ | async as transactions">
+      <div *ngIf="transactions.length === 0 && accountSelectForm.get('selectedAccount')?.value" class="alert alert-info text-center mt-3" role="alert">
+        No transactions found for this account.
+      </div>
+      <div *ngIf="!accountSelectForm.get('selectedAccount')?.value" class="alert alert-secondary text-center mt-3" role="alert">
+        Please select an account to view its transaction history.
+      </div>
+
+
+      <div *ngIf="transactions.length > 0">
+        <h4 class="mt-4">Transactions:</h4>
+        <ul class="list-group">
+          <li *ngFor="let transaction of transactions" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ transaction.type }}:</strong> {{ transaction.description }}
+              <br>
+              <small class="text-muted">{{ transaction.timestamp | date:'medium' }}</small>
+            </div>
+            <span [ngClass]="{'text-success': transaction.amount > 0, 'text-danger': transaction.amount < 0}">
+              {{ transaction.amount | currency }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
+
+    <div class="text-center mt-3">
+      <a routerLink="/dashboard">Back to Dashboard</a>
+    </div>
+  </div>
+</div>

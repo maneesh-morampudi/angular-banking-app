@@ -1,0 +1,26 @@
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+.btn-chequing {
+    background-color: #007bff; /* Blue */
+    color: white;
+}
+.btn-chequing:hover {
+    background-color: #0056b3;
+}
+.btn-savings {
+    background-color: #28a745; /* Green */
+    color: white;
+}
+.btn-savings:hover {
+    background-color: #1e7e34;
+}
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}

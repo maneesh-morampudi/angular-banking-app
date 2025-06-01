@@ -1,0 +1,75 @@
+<div class="container mt-5">
+  <div class="card p-4 shadow">
+    <h2 class="card-title text-center mb-4">Transfer Funds</h2>
+    <form [formGroup]="transferForm" (ngSubmit)="transferFunds()">
+      <div class="mb-3">
+        <label for="fromAccount" class="form-label">From Account</label>
+        <select
+          class="form-select"
+          id="fromAccount"
+          formControlName="fromAccount"
+          [class.is-invalid]="f['fromAccount'].invalid && f['fromAccount'].touched"
+        >
+          <option value="">Select an account</option>
+          <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
+            {{ account.accountName }} ({{ account.type }}) - ${{ account.balance.toFixed(2) }}
+          </option>
+        </select>
+        <div *ngIf="f['fromAccount'].invalid && f['fromAccount'].touched" class="invalid-feedback">
+          Account is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="toAccount" class="form-label">To Account</label>
+        <select
+          class="form-select"
+          id="toAccount"
+          formControlName="toAccount"
+          [class.is-invalid]="f['toAccount'].invalid && f['toAccount'].touched"
+        >
+          <option value="">Select an account</option>
+          <option *ngFor="let account of (accounts$ | async)" [value]="account.id">
+            {{ account.accountName }} ({{ account.type }}) - ${{ account.balance.toFixed(2) }}
+          </option>
+        </select>
+        <div *ngIf="f['toAccount'].invalid && f['toAccount'].touched" class="invalid-feedback">
+          Account is required.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          id="amount"
+          formControlName="amount"
+          [class.is-invalid]="f['amount'].invalid && f['amount'].touched"
+        >
+        <div *ngIf="f['amount'].invalid && f['amount'].touched" class="invalid-feedback">
+          <div *ngIf="f['amount'].errors?.['required']">Amount is required.</div>
+          <div *ngIf="f['amount'].errors?.['min']">Amount must be greater than 0.</div>
+        </div>
+      </div>
+
+      <div *ngIf="transferForm.errors?.['sameAccount'] && f['toAccount'].touched" class="alert alert-danger mt-3">
+        Cannot transfer to the same account.
+      </div>
+
+      <app-custom-button
+        label="Transfer Funds"
+        type="default"
+        [disabled]="transferForm.invalid"
+        (onClick)="transferFunds()"
+      ></app-custom-button>
+
+      <div *ngIf="transferMessage" class="alert alert-info mt-3 text-center" role="alert">
+        {{ transferMessage }}
+      </div>
+    </form>
+    <div class="text-center mt-3">
+      <a routerLink="/dashboard">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
